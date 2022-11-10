@@ -29,15 +29,15 @@ class BackendBaseController extends Controller
         $image      = $request->file($image_field_name);
         $image_name = rand(6785, 9814).'_'.$image->getClientOriginalName();
         $image->move($this->image_path, $image_name);
-        if (count(config('image_dimension.'.$this->folder_name.'.images')) > 0) {
-            foreach (config('image_dimension.'.$this->folder_name.'.images') as $dimension) {
-                // open and resize an image file
-                $img = Image::make($this->image_path.$image_name)->resize($dimension['width'], $dimension['height']);
-                // save the same file as jpg with default quality
-                $img->save($this->image_path.$dimension['width'].'_'.$dimension['height'].'_'.$image_name);
-            }
+        // if (count(config('image_dimension.'.$this->folder_name.'.images')) > 0) {
+        //     foreach (config('image_dimension.'.$this->folder_name.'.images') as $dimension) {
+        //         // open and resize an image file
+        //         $img = Image::make($this->image_path.$image_name)->resize($dimension['width'], $dimension['height']);
+        //         // save the same file as jpg with default quality
+        //         $img->save($this->image_path.$dimension['width'].'_'.$dimension['height'].'_'.$image_name);
+        //     }
             return $image_name;
-        }
+        // }
     }
 
     protected function deleteImage($image_name)
