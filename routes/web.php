@@ -28,6 +28,7 @@ use App\Http\Controllers\PushNotificationController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('/register', [\App\Http\Controllers\API\AuthController::class,'register']);
 
 Auth::routes();
 

@@ -30,7 +30,13 @@
   @enderror
 </div>
 <div class="form-group">
+  {!! Form::label('flash_product','Premium',['class' => 'control-label']) !!}
+  {!! Form::radio('flash_product',1) !!}Premium
+  {!! Form::radio('flash_product',0,true) !!}Free
+</div>
+<div class="form-group">
   {!! Form::label('status','Status',['class' => 'control-label']) !!}
   {!! Form::radio('status',1) !!}Active
   {!! Form::radio('status',0,true) !!}De-Active
 </div>
+

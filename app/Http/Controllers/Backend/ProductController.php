@@ -57,10 +57,35 @@ class ProductController extends BackendBaseController
         return Product::with('chapters','createdBy','attributes','comments')->where('feature_product' , 1)->get();
     }
 
-    public function popular(){
-        return Product::with('chapters','createdBy','attributes','comments')->where('flash_product' , 1)->get();
-    }
+    // public function popular(){
+    //     return Product::with('chapters','createdBy','attributes','comments')->where('flash_product' , 1)->get();
+    // }
+   public function popular(){
+    return Product::with('chapters','createdBy','attributes','comments')
+        ->orderBy('favourite','DESC')
+        ->take(3)
+        ->get();
+}
 
+    //for popular
+    public function addFavourites(Request $request){
+        try{
+            $verif=Product::find($request->id);
+            $verif->favourite = $verif->favourite+1;
+            $verif->save();
+            return response()->json([
+     
+                'success' => true,        
+                ]);
+            }
+            catch(e){
+                return response()->json([
+     
+                    'success' => false,        
+                    ]);
+                }
+            }
+    
     public function active($id)
     {
         $data['row'] = $this->model->findOrFail($id);

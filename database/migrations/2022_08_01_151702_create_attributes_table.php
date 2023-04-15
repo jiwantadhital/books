@@ -17,6 +17,7 @@ class CreateAttributesTable extends Migration
             $table->id();
             $table->string('name');
             $table->boolean('status')->default(0);
+            $table->integer('favourite')->default(0);
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->softDeletes();

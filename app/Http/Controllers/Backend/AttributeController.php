@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Requests\Backend\AttributeRequest;
 use App\Models\Attribute;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class AttributeController extends BackendBaseController
 {
@@ -43,6 +44,37 @@ class AttributeController extends BackendBaseController
     }
     public function showAll(){
         return Attribute::with('novel')->get();
+    }
+    public function addFavourites(Request $request){
+        try{
+            $verif=Attribute::find($request->id);
+            $verif->favourite = $verif->favourite+1;
+            $verif->save();
+            return response()->json([
+     
+                'success' => true,        
+                ]);
+            }
+            catch(e){
+                return response()->json([
+     
+                    'success' => false,        
+                    ]);
+                }
+            }
+            public function popular(){
+                return Attribute::with('novel')
+                    ->orderBy('favourite','DESC')
+                    ->take(4)
+                    ->get();
+            }
+    public function showId($id){
+        $data = Attribute::with('novel')->where('id',$id)->get();
+          if (count($data) > 0) {
+            return response()->json($data[0]);
+        } else {
+            return response()->json([]);
+        }
     }
     /**
      * Store a newly created resource in storage.

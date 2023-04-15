@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('title');
             $table->string('image')->nullable();
             $table->integer('likes')->default(0);
+            $table->integer('favourite')->default(0);
             $table->text('comments')->nullable();
             $table->text('description')->nullable();
             $table->boolean('status')->default(0);

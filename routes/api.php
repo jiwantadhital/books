@@ -24,10 +24,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/login', [\App\Http\Controllers\API\AuthController::class,'login']);
+Route::post('/register', [\App\Http\Controllers\API\AuthController::class,'register']);
+
+
 Route::prefix('backend/')->name('backend.')->group(function(){
     Route::get('product/all',[ProductController::class,'all'])->name('product.all');
     Route::get('chapter/all',[ChapterController::class,'all'])->name('chapter.all');
     Route::get('attribute/all',[AttributeController::class,'showAll'])->name('attribute.all');
+    Route::get('attribute/popular',[AttributeController::class,'popular'])->name('attribute.popular');
+    Route::get('attribute/{id}',[AttributeController::class,'showId'])->name('attribute.id');
     Route::get('onboard/all',[OnboardController::class,'all'])->name('onboard.all');
 
     //recommended
@@ -38,6 +44,9 @@ Route::prefix('backend/')->name('backend.')->group(function(){
 Route::post('/add/data',[GetController::class, 'addMultipleBooks']);
 Route::delete('/favourite/{id}',[GetController::class,'destroy']);
 Route::post('/add/comments',[GetController::class, 'comments']);
+Route::post('/add/favourite',[ProductController::class, 'addFavourites']);
+Route::post('/add/attribute',[AttributeController::class, 'addFavourites']);
+Route::post('/add/paid',[\App\Http\Controllers\API\AuthController::class, 'addFavourites']);
 Route::get('/add/comments',[GetController::class, 'getComment']);
 Route::get('/getFav',[GetController::class, 'favourites']);
 
