@@ -34,7 +34,6 @@
                 <tbody>
                     <tr>
                         @forelse($data['rows'] as $index => $row)
-                        @if(auth()->user()->id === $row->created_by)
 
                             <tr>
                                 <td>{{$index + 1}}</td>
@@ -73,7 +72,6 @@
                                     <a href="{{route($base_route . 'show',$row->id)}}" class="btn btn-info" style="margin: 5px">View</a>
                                 </td>
                             </tr>
-                            @endif
 
                         @empty
                             <tr class="text text-danger">

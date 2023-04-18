@@ -159,7 +159,10 @@
               </li>
             </ul>
           </li>
+
           <li class="nav-item">
+          @if(auth()->user()->user === 0)
+
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
               <p>
@@ -167,6 +170,8 @@
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
+            @endif
+
             <ul class="nav nav-treeview">
           
               <li class="nav-item">
