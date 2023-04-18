@@ -96,12 +96,7 @@
                                             </button>
 
                                         @endif
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="{{route($base_route .'active',$row->id)}}">
-                                                Active
-                                            </a>
-                                            <a class="dropdown-item" href="{{route($base_route .'deactive',$row->id)}}">Deactive</a>
-                                        </div>
+                                    
                                     </div>
                                 </td>
                                 <td>
