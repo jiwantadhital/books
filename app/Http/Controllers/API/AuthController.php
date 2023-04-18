@@ -25,6 +25,7 @@ class AuthController extends Controller
         $userde=auth()->user()->id;
         
         return response()->json([
+            'user_type' => auth()->user()->user,
             'paid' => auth()->user()->paid,
             'token' => $token,
             'message' => "successfull",
@@ -71,15 +72,18 @@ class AuthController extends Controller
         if ($validator->passes()) {
             $user = User::create([
                 'name' => $request->name,
+                'user' => $request->user,
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
             $token = $user->createToken('auth_token')->plainTextToken;
             return response()->json([
-            'token' => $token,
-            'message' => "successfull",
-            'user_id' => $user->id,
-            'user_email' => $user->email
+                'user_type' => $user->user,
+                'paid' => 0,
+                'token' => $token,
+                'message' => "successfull",
+                'user_id' => $user->id,
+                'user_email' => $user->email
             ]);
         }
         else{

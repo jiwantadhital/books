@@ -51,13 +51,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>
-                Basic
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
+          @if(auth()->user()->user === 0)
+  <a href="#" class="nav-link">
+    <i class="nav-icon fas fa-edit"></i>
+    <p>
+      Basic
+      <i class="fas fa-angle-left right"></i>
+    </p>
+  </a>
+@endif
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{route('backend.module.create')}}" class="nav-link">
@@ -81,6 +83,8 @@
             </ul>
           </li>
           <li class="nav-item">
+          @if(auth()->user()->user === 0)
+
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
               <p>
@@ -88,6 +92,8 @@
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
+            @endif
+
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{route('backend.attribute.create')}}" class="nav-link">
@@ -104,6 +110,8 @@
             </ul>
           </li>
           <li class="nav-item">
+          @if(auth()->user()->user === 10)
+
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
               <p>
@@ -111,6 +119,8 @@
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
+            @endif
+
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{route('backend.onboard.create')}}" class="nav-link">
@@ -143,6 +153,24 @@
               </li>
               <li class="nav-item">
                 <a href="{{route('backend.product.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Index</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Pending Novels
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+          
+              <li class="nav-item">
+                <a href="{{route('backend.pending.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Index</p>
                 </a>

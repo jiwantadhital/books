@@ -13,12 +13,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 
-class ProductController extends BackendBaseController
+class PendingController extends BackendBaseController
 {
     protected $panel = 'Product';  //for section/module
-    protected $folder = 'backend.product.';  //for view file
-    protected $base_route = 'backend.product.';  //for for route method
-    protected $folder_name = 'product';
+    protected $folder = 'backend.pending.';  //for view file
+    protected $base_route = 'backend.pending.';  //for for route method
+    protected $folder_name = 'pending';
     protected $title;
     protected $model;
     function __construct(){
@@ -35,7 +35,7 @@ class ProductController extends BackendBaseController
         //
         $this->title = 'List';
 //        $data['rows'] = $this->model->where('status',1)->get();
-        $data['rows'] = $this->model->get();
+        $data['rows'] = $this->model->where('status',0)->get();
         return view($this->__loadDataToView($this->folder . 'index'),compact('data'));
     }
 
@@ -138,15 +138,6 @@ class ProductController extends BackendBaseController
             public function showLiked($id){
                 $data = UserLiked::with('products')->where('user_id',$id)->get();
                 return $data;
-            }
-            //single product
-            public function singleProduct($id){
-                $data= Product::with('chapters','createdBy','attributes','comments')->where('id',$id)->get();
-                if (count($data) > 0) {
-                    return response()->json($data[0]);
-                } else {
-                    return response()->json([]);
-                }
             }
               
                 public function showUserData(){

@@ -40,7 +40,7 @@
                                 <td>{{$index + 1}}</td>
                                 <td>{{$row->title}}</td>
                            
-                                <td>{{ Str::limit($row->description, 200, '...') }}</td>
+                                <td>{{$row->description}}</td>
                                 <td>
                                     <img src="{{asset("images/product/$row->image")}}" alt="" height="150">
                                     </td>

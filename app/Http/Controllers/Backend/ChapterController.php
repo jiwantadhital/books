@@ -144,6 +144,11 @@ class ChapterController extends BackendBaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+     public function partChapters($id){
+        $data = Chapter::where('product_id', $id)->get();
+       return $data;
+    }
     public function update(ChapterRequest $request, $id)
     {
         $data['row'] = $this->model->find($id);

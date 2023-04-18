@@ -5,6 +5,8 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\NovelController;
 use App\Http\Controllers\Backend\ProductController;
+
+use App\Http\Controllers\Backend\PendingController;
 use App\Http\Controllers\Backend\AttributeController;
 use App\Http\Controllers\Backend\ChapterController;
 use App\Http\Controllers\Backend\ModuleController;
@@ -55,6 +57,23 @@ Route::prefix('backend/')->name('backend.')->group(function(){
     Route::get('product/recommendedoff/{id}', [ProductController::class,'recommendedoff'])->name('product.recommendedoff');
     Route::get('product/flashon/{id}', [ProductController::class,'flashon'])->name('product.flashon');
     Route::get('product/flashoff/{id}', [ProductController::class,'flashoff'])->name('product.flashoff');
+//pending
+    Route::post('pending/getAllAttribute',[PendingController::class,'getAllAttribute'])->name('pending.getAllAttribute');
+    Route::post('pending/changeStatusById',[PendingController::class,'changeStatusById'])->name('pending.changeStatus');
+    Route::post('chapter/changeStatusById',[ChapterController::class,'changeStatusById'])->name('chapter.changeStatus');
+
+    Route::post('pending/getDistrictByProvinceId',[PendingController::class,'getDistrictByProvinceId'])->name('pending.getFavourite');
+    Route::post('pending/getChapterByNovelId',[PendingController::class,'getChapterByNovelId'])->name('pending.getChapter');
+    Route::get('pending/trash', [PendingController::class,'trash'])->name('pending.trash');
+    Route::post('pending/{id}/restore', [PendingController::class,'restore'])->name('pending.restore');
+    Route::delete('pending/{id}/force-delete',[PendingController::class,'forceDelete'])->name('pending.forceDelete');
+    Route::resource('pending',PendingController::class);
+    Route::get('pending/active/{id}', [PendingController::class,'active'])->name('pending.active');
+    Route::get('pending/deactivate/{id}', [PendingController::class,'deactive'])->name('pending.deactive');
+    Route::get('pending/recommendedon/{id}', [PendingController::class,'recommendedon'])->name('pending.recommendedon');
+    Route::get('pending/recommendedoff/{id}', [PendingController::class,'recommendedoff'])->name('pending.recommendedoff');
+    Route::get('pending/flashon/{id}', [PendingController::class,'flashon'])->name('pending.flashon');
+    Route::get('pending/flashoff/{id}', [PendingController::class,'flashoff'])->name('pending.flashoff');
 
     Route::get('attribute/trash', [AttributeController::class,'trash'])->name('attribute.trash');
     Route::post('attribute/{id}/restore', [AttributeController::class,'restore'])->name('attribute.restore');

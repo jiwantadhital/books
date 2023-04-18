@@ -49,9 +49,24 @@ Route::post('/add/attribute',[AttributeController::class, 'addFavourites']);
 Route::post('/add/paid',[\App\Http\Controllers\API\AuthController::class, 'addFavourites']);
 Route::get('/add/comments',[GetController::class, 'getComment']);
 Route::get('/getFav',[GetController::class, 'favourites']);
+Route::get('/partChapter/{id}',[ChapterController::class, 'partChapters']);
 
 //likes
 
 Route::post('/add/likes',[GetController::class, 'addLikes']);
+
+Route::post('/add/userLike',[ProductController::class, 'storeData']);
+//add likes
+Route::post('/add/likes',[ProductController::class, 'storeLike']);
+
+//show liked
+Route::get('/show/liked/{id}',[ProductController::class, 'showLiked']);
+
+//delete likes
+Route::post('/user-like',[ProductController::class, 'deleteLikes']);
+
 Route::get('/show/likes',[GetController::class, 'getLikes']);
+Route::get('/show/userData',[ProductController::class, 'showUserData']);
+
+Route::get('/product/single/{id}',[ProductController::class, 'singleProduct']);
 

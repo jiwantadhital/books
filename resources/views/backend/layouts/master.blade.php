@@ -19,6 +19,8 @@
 
   @yield('css')
 </head>
+@if(auth()->user()->user != 2)
+
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
@@ -207,4 +209,11 @@
 <!-- AdminLTE for demo purposes -->
 @yield('js')
 </body>
+@else
+<body>
+<div style="text-align:center; margin-top:20%">
+  <h2>Sorry Not Authorized</h2>
+</div></body>
+@endif
+
 </html>
