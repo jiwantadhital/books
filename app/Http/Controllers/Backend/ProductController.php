@@ -12,6 +12,8 @@ use App\Models\UserPref;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Arr;
+
 
 class ProductController extends BackendBaseController
 {
@@ -148,21 +150,48 @@ class ProductController extends BackendBaseController
                     return response()->json([]);
                 }
             }
-              
-                public function showUserData(){
-                    $attributeData = UserPref::
-    where('user_id', 5)
-    ->select('product_id', DB::raw('count(*) as attribute_count'))
-    ->groupBy('product_id')
-    ->orderByDesc('attribute_count')->with('products')
-    ->limit(4)
-    ->get();
-                
-
-                //    $data= DB::table('user_pref')->where('user_id', 5)->get();
-                    return $attributeData;
+            public function showUserData()
+            {
+                $mostRepeatedProductId = UserPref::select('product_id')
+                    ->groupBy('product_id')
+                    ->orderByRaw('COUNT(*) DESC')
+                    ->value('product_id');
+        $data = Product::where('id', $mostRepeatedProductId)->value('id');
+                return "'$data'";
+            }
+          public function cosine_similarity($a, $b) {
+                $a = array_count_values(str_word_count(strtolower($a), 1));
+                $b = array_count_values(str_word_count(strtolower($b), 1));
+                $dot_product = 0;
+                foreach ($a as $word => $count) {
+                    if (isset($b[$word])) {
+                        $dot_product += $count * $b[$word];
+                    }
                 }
-    
+                $a_norm = sqrt(array_sum(array_map(function($x) {return $x * $x;}, $a)));
+                $b_norm = sqrt(array_sum(array_map(function($x) {return $x * $x;}, $b)));
+                return $dot_product / ($a_norm * $b_norm);
+            }
+            
+            public function shoUData(){
+                $product = Product::find(2);
+                $description = $product->description;
+                
+                // 2. Calculate the cosine similarity between the description of product 3 and the descriptions of all other products in the database
+                $products = Product::where('id', '<>', 2)->get();
+                $similarities = [];
+                foreach ($products as $p) {
+                    $similarity = $this->cosine_similarity($description, $p->description);
+                    $similarities[$p->id] = $similarity;
+                }
+                
+                // 3. Select the top three products with the highest cosine similarity scores
+                arsort($similarities);
+                $similar_product_ids = array_slice(array_keys($similarities), 0, 4);
+                $similar_products = Product::whereIn('id', $similar_product_ids)->get();
+                return $similar_products;
+            }
+ 
     public function active($id)
     {
         $data['row'] = $this->model->findOrFail($id);

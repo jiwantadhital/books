@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\ProductController;
@@ -65,8 +66,11 @@ Route::get('/show/liked/{id}',[ProductController::class, 'showLiked']);
 //delete likes
 Route::post('/user-like',[ProductController::class, 'deleteLikes']);
 
+//comments
+Route::post('/user-comments',[AuthController::class, 'addComment']);
+
 Route::get('/show/likes',[GetController::class, 'getLikes']);
-Route::get('/show/userData',[ProductController::class, 'showUserData']);
+Route::get('/show/userData',[ProductController::class, 'shoUData']);
 
 Route::get('/product/single/{id}',[ProductController::class, 'singleProduct']);
 

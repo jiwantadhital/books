@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
+use App\Models\Comments;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -52,14 +53,30 @@ class AuthController extends Controller
                 }
             }
 
-         
+         public function addComment(Request $request){
+            try{
+             Comments::create([
+                'product_id' => $request->product_id,
+                'comments' => $request->comments,
+                'likes' => $request->likes,
+            ]);
+            return response()->json([
+                'message' => "success",
+                ]);
+        }
+        catch(e){
+            return response()->json([
+                'message' => "failed",
+                ]);
+        }
+         }
     public function register(Request $request)
     {
         // Validate request data
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
-            'password' => 'required|min:10',
+            'password' => 'required|min:3',
         ]);
         // Return errors if validation error occur.
         if ($validator->fails()) {

@@ -19,6 +19,7 @@ class VerifyCsrfToken extends Middleware
         '/api/add/paid',
         '/api/add/userLike',
         '/api/add/likes',
-        '/api/user-like'
+        '/api/user-like',
+        '/api/user-comments'
     ];
 }
