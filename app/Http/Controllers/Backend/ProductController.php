@@ -148,20 +148,43 @@ class ProductController extends BackendBaseController
                     return response()->json([]);
                 }
             }
-              
-                public function showUserData(){
-                    $attributeData = UserPref::
-    where('user_id', 5)
-    ->select('product_id', DB::raw('count(*) as attribute_count'))
-    ->groupBy('product_id')
-    ->orderByDesc('attribute_count')->with('products')
-    ->limit(4)
-    ->get();
-                
+           public function showUserData()
+            {
+                $mostRepeatedProductId = UserPref::select('product_id')
+                    ->groupBy('product_id')
+                    ->orderByRaw('COUNT(*) DESC')
+                    ->value('product_id');
+        $data = Product::where('id', $mostRepeatedProductId)->value('id');
+                return "'$data'";
+            }
+            public function shoUData(){
 
-                //    $data= DB::table('user_pref')->where('user_id', 5)->get();
-                    return $attributeData;
-                }
+            
+                // Get the product_id returned by the showUserData method
+$mostRepeatedProductId = $this->showUserData();
+
+// Retrieve all the product ids from the products table
+$productIds = Product::pluck('id')->toArray();
+
+// Calculate the cosine similarity between each product_id and the most repeated product_id
+$similarities = [];
+foreach ($productIds as $productId) {
+    similar_text($mostRepeatedProductId, $productId, $similarity);
+    $similarities[$productId] = $similarity;
+}
+
+// Sort the similarities in descending order
+arsort($similarities);
+
+// Get the top N products with the highest similarity scores
+$topSimilarProducts = Product::whereIn('id', array_keys($similarities))
+    ->orderByRaw('FIELD(id, ' . implode(',', array_keys($similarities)) . ')')
+    ->take(3)
+    ->get();
+    return $topSimilarProducts;
+            }  
+    
+            
     
     public function active($id)
     {
@@ -367,3 +390,4 @@ if ($request->hasFile('image_file')) {
     //     return $html;
     // }
 }
+

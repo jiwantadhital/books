@@ -66,7 +66,7 @@ Route::get('/show/liked/{id}',[ProductController::class, 'showLiked']);
 Route::post('/user-like',[ProductController::class, 'deleteLikes']);
 
 Route::get('/show/likes',[GetController::class, 'getLikes']);
-Route::get('/show/userData',[ProductController::class, 'showUserData']);
+Route::get('/show/userData/{id}',[ProductController::class, 'showUserData']);
 
 Route::get('/product/single/{id}',[ProductController::class, 'singleProduct']);
 
