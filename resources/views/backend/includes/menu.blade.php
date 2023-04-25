@@ -206,7 +206,7 @@
             </ul>
           </li>
         
-          <li class="nav-header">EXAMPLES</li>
+          <li class="nav-header">Others</li>
           <li class="nav-item">
             <a href="{{ route('logout') }}" class="nav-link"
                    onclick="event.preventDefault();

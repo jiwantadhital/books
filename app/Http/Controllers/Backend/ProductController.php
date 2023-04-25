@@ -221,7 +221,7 @@ class ProductController extends BackendBaseController
 
     // Select the top 4 products with the highest weighted similarity scores
     arsort($weighted_similarities);
-    $similar_product_ids = array_slice(array_keys($weighted_similarities), 0, 1);
+    $similar_product_ids = array_slice(array_keys($weighted_similarities), 0, 3);
     $similar_products = Product::whereIn('id', $similar_product_ids)->get();
     return $similar_products;
 }
