@@ -150,6 +150,7 @@ class ProductController extends BackendBaseController
                     return response()->json([]);
                 }
             }
+            //
             public function showUserData()
             {
                 $mostRepeatedProductId = UserPref::select('product_id')
@@ -172,25 +173,76 @@ class ProductController extends BackendBaseController
                 $b_norm = sqrt(array_sum(array_map(function($x) {return $x * $x;}, $b)));
                 return $dot_product / ($a_norm * $b_norm);
             }
-            
-            public function shoUData(){
-                $product = Product::find(2);
-                $description = $product->description;
+            public function shoUData()
+{
+      $mostRepeatedProductId = UserPref::select('product_id')
+                    ->groupBy('product_id')
+                    ->orderByRaw('COUNT(*) DESC')
+                    ->value('product_id');
+        $data = Product::where('id', $mostRepeatedProductId)->value('id');
+    // Get the product with the given ID
+    $product = Product::find($data);
+
+    // Get the product description and preprocess it
+    $description = strtolower($product->description);
+    $description = preg_replace('/[^a-zA-Z0-9]/', ' ', $description);
+    $description = preg_replace('/\s+/', ' ', $description);
+
+    // Define the weights for the different features of the product description
+    $weights = [
+        'title' => 0.4,
+        'author' => 0.3,
+        $description => 0.1
+    ];
+
+    // Get all the products except for the given product
+    $products = Product::where('id', '<>', $data)->get();
+
+    // Calculate the cosine similarity between the product description and each product in the database
+    $similarities = [];
+    foreach ($products as $p) {
+        $similarity = $this->cosine_similarity($description, strtolower($p->description));
+        $similarities[$p->id] = $similarity;
+    }
+
+    // Apply the weights to the similarity scores and calculate the weighted average for each product
+    $weighted_similarities = [];
+    foreach ($similarities as $id => $similarity) {
+        $product = Product::find($id);
+        $weighted_similarity = 0;
+        foreach ($weights as $feature => $weight) {
+            $value = strtolower($product->$feature);
+            $value = preg_replace('/[^a-zA-Z0-9]/', ' ', $value);
+            $value = preg_replace('/\s+/', ' ', $value);
+            $weighted_similarity += $similarity * $weight;
+        }
+        $weighted_similarities[$id] = $weighted_similarity;
+    }
+
+    // Select the top 4 products with the highest weighted similarity scores
+    arsort($weighted_similarities);
+    $similar_product_ids = array_slice(array_keys($weighted_similarities), 0, 1);
+    $similar_products = Product::whereIn('id', $similar_product_ids)->get();
+    return $similar_products;
+}
+            // public function shoUData(){
+            //     $product = Product::find(2);
+            //     $description = $product->description;
                 
-                // 2. Calculate the cosine similarity between the description of product 3 and the descriptions of all other products in the database
-                $products = Product::where('id', '<>', 2)->get();
-                $similarities = [];
-                foreach ($products as $p) {
-                    $similarity = $this->cosine_similarity($description, $p->description);
-                    $similarities[$p->id] = $similarity;
-                }
+            //     // 2. Calculate the cosine similarity between the description of product 3 and the descriptions of all other products in the database
+            //     $products = Product::where('id', '<>', 2)->get();
+            //     $similarities = [];
+            //     foreach ($products as $p) {
+            //         $similarity = $this->cosine_similarity($description, $p->description);
+            //         $similarities[$p->id] = $similarity;
+            //     }
                 
-                // 3. Select the top three products with the highest cosine similarity scores
-                arsort($similarities);
-                $similar_product_ids = array_slice(array_keys($similarities), 0, 4);
-                $similar_products = Product::whereIn('id', $similar_product_ids)->get();
-                return $similar_products;
-            }
+            //     // 3. Select the top three products with the highest cosine similarity scores
+            //     arsort($similarities);
+            //     $similar_product_ids = array_slice(array_keys($similarities), 0, 4);
+            //     $similar_products = Product::whereIn('id', $similar_product_ids)->get();
+            //     return $similar_products;
+            // }
  
     public function active($id)
     {
