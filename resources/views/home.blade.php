@@ -3,7 +3,7 @@
 @section('main-content')
 <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Titlee</h3>
+      <h3 class="card-title">Novel</h3>
 
       <div class="card-tools">
         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="card-body">
-      Start creating your amazing applicati
+      Start read your favourite novels.
     </div>
     <!-- /.card-body -->
     <div class="card-footer">
