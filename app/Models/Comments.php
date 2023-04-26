@@ -13,10 +13,13 @@ class Comments extends Model
     use SoftDeletes;
 
     protected $table = 'comments';
-    protected $fillable = ['product_id','likes','comments','created_by','updated_by'];
+    protected $fillable = ['user_id','product_id','likes','comments','created_by','updated_by'];
 
     function createdBy(){
         return $this->belongsTo(User::class,'created_by');
+    }
+    function user(){
+        return $this->belongsTo(User::class,'user_id');
     }
 
     function updatedBy(){

@@ -59,6 +59,7 @@ class AuthController extends Controller
                 'product_id' => $request->product_id,
                 'comments' => $request->comments,
                 'likes' => $request->likes,
+                "user_id" => $request->user_id,
             ]);
             return response()->json([
                 'message' => "success",

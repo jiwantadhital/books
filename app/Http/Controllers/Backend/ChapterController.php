@@ -44,7 +44,7 @@ class ChapterController extends BackendBaseController
 
         $this->title = 'Create';
 
-        $data['products'] = Product::pluck('title','id');;
+        $data['products'] = Product::where('created_by',auth()->user()->id)->pluck('title','id');
         $data['numbers'] = Chapter::pluck('number','id');
         $data['favourites'] = Get::pluck('user','id');
         return view($this->__loadDataToView($this->folder . 'create'),compact('data'));

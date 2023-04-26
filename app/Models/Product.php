@@ -28,7 +28,7 @@ class Product extends Model
         return $this->hasMany(Chapter::class);
     }
     function  comments(){
-        return $this->hasMany(Comments::class);
+        return $this->hasMany(Comments::class)->with('user');
     }
     function  favourites(){
         return $this->hasMany(Get::class);

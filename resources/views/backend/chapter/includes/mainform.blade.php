@@ -1,5 +1,5 @@
 <div class="form-group">
-    {!! Form::label('product_id', 'Novels'); !!}
+    {!! Form::label('product_id', 'Novels') !!}
     {!! Form::select('product_id', $data['products'], null,['class' => 'form-control']) !!}
     @error('product_id')
     <span class="text text-danger">{{$message}}</span>
