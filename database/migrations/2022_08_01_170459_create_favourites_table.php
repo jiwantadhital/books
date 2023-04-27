@@ -17,6 +17,7 @@ class CreateFavouritesTable extends Migration
             $table->id();
             $table->string('user');
             $table->unsignedBigInteger('product_id');
+            $table->softDeletes();
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products');
         });

@@ -18,7 +18,7 @@ class UserLiked extends Model
     //     return $this->belongsToMany(Attribute::class,'product_attributes','product_id','attribute_id');
     // }
     function  products(){
-        return $this->belongsTo(Product::class,'product_id');
+        return $this->belongsTo(Product::class,'product_id')->with('chapters','createdBy','attributes','comments');
     }
     function  comments(){
         return $this->hasMany(Comments::class);

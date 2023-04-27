@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Get;
 use App\Models\Comments;
@@ -52,7 +53,8 @@ class GetController extends Controller
 
     //for likes
     public function getLikes(){
-        return Likes::all();
+        $data = Likes::pluck('product_id');
+        return Product::whereIn('id', $data->toArray())->with('chapters','createdBy','attributes','comments')->get();
     }
     public function addLikes(Request $request){
         if($request->isMethod('post')){

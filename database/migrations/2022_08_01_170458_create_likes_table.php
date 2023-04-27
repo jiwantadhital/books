@@ -17,6 +17,7 @@ class CreateLikesTable extends Migration
             $table->id();
             $table->string('liked');
             $table->unsignedBigInteger('product_id');
+            $table->softDeletes();
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products');
         });

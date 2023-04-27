@@ -7,6 +7,7 @@ use App\Http\Requests\Backend\ProductRequest;
 use App\Models\Attribute;
 use App\Models\Product;
 use App\Models\ProductAttribute;
+use App\Models\User;
 use App\Models\UserLiked;
 use App\Models\UserPref;
 use Illuminate\Http\Request;
@@ -56,7 +57,7 @@ class ProductController extends BackendBaseController
 
     //for api
     public function all(){
-        return Product::with('chapters','createdBy','attributes','comments')->get();
+        return Product::with('chapters','createdBy','attributes','comments')->where('status',1)->get();
     }
     public function recommended(){
         return Product::with('chapters','createdBy','attributes','comments')->where('feature_product' , 1)->get();
@@ -66,7 +67,7 @@ class ProductController extends BackendBaseController
     //     return Product::with('chapters','createdBy','attributes','comments')->where('flash_product' , 1)->get();
     // }
    public function popular(){
-    return Product::with('chapters','createdBy','attributes','comments')
+    return Product::with('chapters','createdBy','attributes','comments')->where('status',1)
         ->orderBy('favourite','DESC')
         ->take(3)
         ->get();
@@ -143,7 +144,7 @@ class ProductController extends BackendBaseController
             }
             //single product
             public function singleProduct($id){
-                $data= Product::with('chapters','createdBy','attributes','comments')->where('id',$id)->get();
+                $data= Product::with('chapters','createdBy','attributes','comments')->where('status',1)->where('id',$id)->get();
                 if (count($data) > 0) {
                     return response()->json($data[0]);
                 } else {
@@ -180,7 +181,10 @@ class ProductController extends BackendBaseController
                     ->orderByRaw('COUNT(*) DESC')
                     ->value('product_id');
         $data = Product::where('id', $mostRepeatedProductId)->value('id');
-    // Get the product with the given ID
+        $atData =Product::where('id', $mostRepeatedProductId)->value('created_by');
+        $title =Product::where('id', $mostRepeatedProductId)->value('title');
+        $author = User::where('id',$atData)->value('name');
+            // Get the product with the given ID
     $product = Product::find($data);
 
     // Get the product description and preprocess it
@@ -190,8 +194,8 @@ class ProductController extends BackendBaseController
 
     // Define the weights for the different features of the product description
     $weights = [
-        'title' => 0.4,
-        'author' => 0.3,
+        $title => 0.4,
+        $author => 0.3,
         $description => 0.1
     ];
 
@@ -219,30 +223,13 @@ class ProductController extends BackendBaseController
         $weighted_similarities[$id] = $weighted_similarity;
     }
 
-    // Select the top 4 products with the highest weighted similarity scores
+    // Select the top 3 products with the highest weighted similarity scores
     arsort($weighted_similarities);
     $similar_product_ids = array_slice(array_keys($weighted_similarities), 0, 3);
-    $similar_products = Product::whereIn('id', $similar_product_ids)->get();
+    $similar_products = Product::whereIn('id', $similar_product_ids)->with('chapters','createdBy','attributes','comments')->where('status',1)->get();
     return $similar_products;
 }
-            // public function shoUData(){
-            //     $product = Product::find(2);
-            //     $description = $product->description;
-                
-            //     // 2. Calculate the cosine similarity between the description of product 3 and the descriptions of all other products in the database
-            //     $products = Product::where('id', '<>', 2)->get();
-            //     $similarities = [];
-            //     foreach ($products as $p) {
-            //         $similarity = $this->cosine_similarity($description, $p->description);
-            //         $similarities[$p->id] = $similarity;
-            //     }
-                
-            //     // 3. Select the top three products with the highest cosine similarity scores
-            //     arsort($similarities);
-            //     $similar_product_ids = array_slice(array_keys($similarities), 0, 4);
-            //     $similar_products = Product::whereIn('id', $similar_product_ids)->get();
-            //     return $similar_products;
-            // }
+           
  
     public function active($id)
     {
