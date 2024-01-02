@@ -20,11 +20,6 @@ class PushNotificationController extends Controller
         return view('notification.index', compact('books'));
     }
     public function bulksend(Request $req){
-        // $comment = new PushNotification();
-        // $comment->title = $req->input('title');
-        // $comment->body = $req->input('body');
-        // $comment->img = $req->input('img');
-        // $comment->save();
         $ids = $req->product_id;
         $user = Get::whereNotNull('user')->where('product_id', $ids)->pluck('user')->all();     
         $url = 'https://fcm.googleapis.com/fcm/send';
